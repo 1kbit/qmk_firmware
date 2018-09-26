@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: docker build
+          command: docker build -t qmk_firmware .
+      - run:
+          name: docker run
+          command: docker run -e keymap=1024bit -e keyboard=ergodox_ez --rm -v $('pwd'):/qmk:rw -t qmk_firmware
+      - store_artifacts:
+          path: .build/ergodox_ez_1024bit.hex
